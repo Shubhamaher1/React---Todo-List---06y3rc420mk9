@@ -1,10 +1,24 @@
 import React, { useState } from "react";
 import "./../styles/App.css";
+import List from "./List";
 
 function App() {
   const [value, setValue] = useState("");
   const [list, setList] = useState([]);
-
+  function delet(id) {
+    let newList = list.filter((valu, index) => {
+      return index != id;
+    });
+    setList(newList);
+  }
+  function edit(id) {
+    list.map((ele, index) => {
+      if (id === index) {
+        setValue(ele);
+      }
+    });
+    delet(id);
+  }
   return (
     <div id="main">
       <textarea
@@ -18,8 +32,11 @@ function App() {
       <button
         id="btn"
         onClick={() => {
-          setList((list) => [...list, value]);
-          setValue("");
+          if (value === "") {
+          } else {
+            setList((list) => [...list, value]);
+            setValue("");
+          }
         }}
       >
         {" "}
@@ -27,11 +44,7 @@ function App() {
       </button>
       <div>
         {list.map((ele, index) => (
-          <>
-            <div className="list">{ele}</div>
-            <button>delet</button>
-            <button>edit</button>
-          </>
+          <List ele={ele} index={index} delete={delet} edits={edit} />
         ))}
       </div>
     </div>
